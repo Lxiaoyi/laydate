@@ -18,7 +18,8 @@ var config =  {
     min: '1900-01-01 00:00:00', //最小日期
     max: '2099-12-31 23:59:59', //最大日期
     isv: false,
-    init: true
+    init: true,
+    isMonth:false
 };
 
 var Dates = {}, doc = document, creat = 'createElement', byid = 'getElementById', tags = 'getElementsByTagName';
@@ -28,6 +29,8 @@ var as = ['laydate_box', 'laydate_void', 'laydate_click', 'LayDateSkin', 'skins/
 //主接口
 win.laydate = function(options){
     options = options || {};
+    //自己修改添加,只显示年月
+    options.isMonth?config.isMonth=options.isMonth:'';
     try{
         as.event = win.event ? win.event : laydate.caller.arguments[0];
     } catch(e){};
@@ -507,6 +510,10 @@ Dates.iswrite = function(){
     Dates.shde(as.oclear, !('isclear' in Dates.options ? Dates.options.isclear : 1));
     Dates.shde(as.otoday, !('istoday' in Dates.options ? Dates.options.istoday : 1));
     Dates.shde(as.ok, !('issure' in Dates.options ? Dates.options.issure : 1));
+    //自己添加，如果是年月隐藏天数选择表格
+    if(config.isMonth){
+        S("#laydate_table").style.display = "none";
+    }
 };
 
 //方位辨别
@@ -606,8 +613,8 @@ Dates.view = function(elem, options){
         +'</div>'
         
         + Dates.viewtb
-        
-        +'<div class="laydate_bottom">'
+
+        + '<div class="laydate_bottom">'
           +'<ul id="laydate_hms">'
             +'<li class="laydate_sj">时间</li>'
             +'<li><input readonly>:</li>'
@@ -772,6 +779,10 @@ Dates.events = function(){
             Dates.stopmp(ev).reshow();
             if(!Dates.hasClass(this, as[1])){
                 Dates.viewDate(Dates.ymd[0], this.getAttribute('m')|0, Dates.ymd[2]);
+                //自己修改添加，如果是月份点击月份直接确定时间
+                if(config.isMonth){
+                    Dates.creation([Dates.ymd[0], Dates.ymd[1]+1, Dates.ymd[2]]);
+                }
             }
         });
     });
