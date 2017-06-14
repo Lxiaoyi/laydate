@@ -34,9 +34,11 @@
     <script type="text/javascript">
         laydate({
             elem: '#J-xl',
-            format:   'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            format:   'YYYY-MM', // 分隔符可以任意定义，该例子表示只显示年月
             isMonth: true,
             issure:false,
+            istoday:false,
+            skin:'molv',
             choose:   function(datas){
                 console.log(datas);
             }
